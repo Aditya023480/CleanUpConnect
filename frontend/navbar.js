@@ -5,10 +5,11 @@
       return;
     }
 
-    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    const currentPage = window.location.pathname.split('/').pop() || 'landing.html';
     let loggedIn = window.Auth && window.Auth.isLoggedIn();
     const links = [
-      { href: 'index.html', label: 'Home' },
+      { href: 'landing.html', label: 'Home' },
+      { href: 'index.html', label: 'Events' },
       { href: 'create.html', label: 'Create Event' },
       { href: 'leaderboard.html', label: 'Leaderboard' },
     ];
@@ -29,6 +30,10 @@
     }
 
     nav.innerHTML = `
+      <a href="landing.html" class="nav-brand" aria-label="CleanUpConnect Home">
+        <img src="assets/icon.png" alt="CleanUpConnect icon" class="nav-brand-logo">
+        <span class="nav-brand-text">CleanUpConnect</span>
+      </a>
       <div class="nav-links">
         ${links
           .map((link) => {
@@ -38,6 +43,7 @@
           .join('')}
       </div>
       <div class="nav-actions">
+        <button type="button" id="theme-toggle" class="btn btn-ghost nav-theme-toggle">Switch to Dark</button>
         ${
           loggedIn
             ? '<button type="button" id="logout-btn" class="btn btn-ghost">Logout</button>'
@@ -45,6 +51,8 @@
         }
       </div>
     `;
+
+    document.dispatchEvent(new Event('navbar:rendered'));
 
     const logoutButton = document.getElementById('logout-btn');
     if (logoutButton) {

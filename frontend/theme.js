@@ -1,5 +1,6 @@
 (function () {
   const STORAGE_KEY = 'community-cleaning-theme';
+  let isToggleBound = false;
 
   function getInitialTheme() {
     const saved = localStorage.getItem(STORAGE_KEY);
@@ -18,6 +19,21 @@
     }
   }
 
+  function bindThemeToggle() {
+    const toggle = document.getElementById('theme-toggle');
+    if (!toggle || isToggleBound) {
+      return;
+    }
+
+    isToggleBound = true;
+    toggle.addEventListener('click', function () {
+      const current = document.body.getAttribute('data-theme') || 'light';
+      const next = current === 'dark' ? 'light' : 'dark';
+      localStorage.setItem(STORAGE_KEY, next);
+      applyTheme(next);
+    });
+  }
+
   function initTheme() {
     if (!document.body) {
       return;
@@ -25,17 +41,11 @@
 
     const theme = getInitialTheme();
     applyTheme(theme);
-
-    const toggle = document.getElementById('theme-toggle');
-    if (!toggle) {
-      return;
-    }
-
-    toggle.addEventListener('click', function () {
-      const current = document.body.getAttribute('data-theme') || 'light';
-      const next = current === 'dark' ? 'light' : 'dark';
-      localStorage.setItem(STORAGE_KEY, next);
-      applyTheme(next);
+    bindThemeToggle();
+    document.addEventListener('navbar:rendered', function () {
+      isToggleBound = false;
+      applyTheme(document.body.getAttribute('data-theme') || getInitialTheme());
+      bindThemeToggle();
     });
   }
 

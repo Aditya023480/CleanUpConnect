@@ -154,7 +154,7 @@ async function loadEvents() {
         <p><strong>Volunteers:</strong> ${event.joined_count} / ${event.volunteers_needed}</p>
         <p><strong>Organizer:</strong> ${event.organizer_username || 'Unknown'}</p>
         <div class="card-actions">
-          <button class="btn" onclick="joinEvent(${event.id})" ${isCompleted ? 'disabled' : ''}>${isCompleted ? 'Completed' : (isLoggedIn ? 'Join' : 'Login to Join')}</button>
+          <button class="btn ${isCompleted ? 'btn-completed' : ''}" onclick="joinEvent(${event.id})" ${isCompleted ? 'disabled' : ''}>${isCompleted ? 'Completed' : (isLoggedIn ? 'Join' : 'Login to Join')}</button>
           <a href="details.html?id=${event.id}" class="btn">View Details</a>
         </div>
       `;
