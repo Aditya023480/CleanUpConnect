@@ -1,5 +1,4 @@
 const express = require('express');
-const cors = require('cors');
 const eventsRoutes = require('./routes/events');
 const authRoutes = require('./routes/auth');
 const leaderboardRoutes = require('./routes/leaderboard');
@@ -17,32 +16,42 @@ const allowedOrigins = [
   'http://127.0.0.1:8000',
 ].filter(Boolean);
 
-const corsOptions = {
-  origin(origin, callback) {
-    if (!origin) {
-      return callback(null, true);
+function isAllowedOrigin(origin) {
+  if (!origin) {
+    return true;
+  }
+
+  return (
+    allowedOrigins.includes(origin) ||
+    origin.endsWith('.vercel.app') ||
+    origin.startsWith('http://localhost') ||
+    origin.startsWith('https://localhost') ||
+    origin.startsWith('http://127.0.0.1') ||
+    origin.startsWith('https://127.0.0.1')
+  );
+}
+
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+
+  if (isAllowedOrigin(origin)) {
+    if (origin) {
+      res.setHeader('Access-Control-Allow-Origin', origin);
+      res.setHeader('Vary', 'Origin');
     }
 
-    if (
-      allowedOrigins.includes(origin) ||
-      origin.endsWith('.vercel.app') ||
-      origin.startsWith('http://localhost') ||
-      origin.startsWith('https://localhost') ||
-      origin.startsWith('http://127.0.0.1') ||
-      origin.startsWith('https://127.0.0.1')
-    ) {
-      return callback(null, true);
-    }
+    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+  }
 
-    return callback(new Error('Not allowed by CORS'));
-  },
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  optionsSuccessStatus: 204,
-};
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(204);
+  }
 
-app.use(cors(corsOptions));
-app.options('*', cors(corsOptions));
+  return next();
+});
+
 app.use(express.json());
 
 app.use('/events', eventsRoutes);
