@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Create Account</h1>
+    <div class="header-actions">
+      <button type="button" id="theme-toggle" class="btn btn-ghost">Switch to Dark</button>
+      <a href="index.html" class="btn">Home</a>
+    </div>
+  </header>
+
+  <nav id="navbar" class="site-nav" aria-label="Main navigation"></nav>
+
+  <main>
+    <form id="register-form" class="auth-form">
+      <h2>Register</h2>
+      <p class="form-copy">Join the community and manage your profile.</p>
+
+      <label for="username">Username</label>
+      <input type="text" id="username" required>
+
+      <label for="email">Email</label>
+      <input type="email" id="email" required>
+
+      <label for="password">Password</label>
+      <input type="password" id="password" minlength="6" required>
+
+      <label for="confirm-password">Confirm Password</label>
+      <input type="password" id="confirm-password" minlength="6" required>
+
+      <button type="submit" class="btn">Create Account</button>
+      <p id="register-message" class="form-message" aria-live="polite"></p>
+      <p class="auth-meta">Already have an account? <a href="login.html">Login</a></p>
+    </form>
+  </main>
+
+  <script src="auth.js"></script>
+  <script src="navbar.js"></script>
+  <script src="theme.js"></script>
+  <script>
+    const registerForm = document.getElementById('register-form');
+    const registerMessage = document.getElementById('register-message');
+
+    function setMessage(message, type) {
+      registerMessage.textContent = message;
+      registerMessage.className = `form-message ${type}`;
+    }
+
+    registerForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const username = document.getElementById('username').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirm-password').value;
+
+      if (!username || !email || !password || !confirmPassword) {
+        setMessage('Please fill all fields.', 'error');
+        return;
+      }
+
+      if (password.length < 6) {
+        setMessage('Password must be at least 6 characters.', 'error');
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        setMessage('Passwords do not match.', 'error');
+        return;
+      }
+
+      try {
+        const response = await fetch('http://localhost:5000/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, email, password }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          setMessage(data.error || 'Registration failed.', 'error');
+          return;
+        }
+
+        setMessage('Registration successful. Redirecting to login...', 'success');
+        setTimeout(() => {
+          window.location.href = 'login.html';
+        }, 1200);
+      } catch (error) {
+        setMessage('Unable to connect to server.', 'error');
+      }
+    });
+  </script>
+</body>
+</html>

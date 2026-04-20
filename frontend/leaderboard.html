@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leaderboard</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Leaderboard</h1>
+    <div class="header-actions">
+      <button type="button" id="theme-toggle" class="btn btn-ghost">Switch to Dark</button>
+      <a href="index.html" class="btn">Home</a>
+    </div>
+  </header>
+
+  <nav id="navbar" class="site-nav" aria-label="Main navigation"></nav>
+
+  <main>
+    <section class="event-card leaderboard-card">
+      <div class="leaderboard-header">
+        <div>
+          <h2>Community Rank Board</h2>
+          <p class="form-copy">Points are earned by joining events and by completing them with your group.</p>
+        </div>
+      </div>
+      <div id="leaderboard-status" class="form-message">Loading leaderboard...</div>
+      <div id="leaderboard-list" class="leaderboard-list"></div>
+    </section>
+  </main>
+
+  <script src="auth.js"></script>
+  <script src="navbar.js"></script>
+  <script src="theme.js"></script>
+  <script>
+    const statusEl = document.getElementById('leaderboard-status');
+    const listEl = document.getElementById('leaderboard-list');
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#39;');
+    }
+
+    async function loadLeaderboard() {
+      try {
+        const response = await fetch('http://localhost:5000/leaderboard');
+        const data = await response.json();
+
+        if (!response.ok) {
+          statusEl.textContent = data.error || 'Failed to load leaderboard.';
+          return;
+        }
+
+        const users = data.users || [];
+
+        if (users.length === 0) {
+          statusEl.textContent = 'No users yet.';
+          return;
+        }
+
+        statusEl.textContent = '';
+        listEl.innerHTML = users.map((user) => `
+          <article class="leaderboard-row">
+            <div class="leaderboard-rank">#${user.rank_position}</div>
+            <div class="leaderboard-user">
+              <h3>${escapeHtml(user.username)}</h3>
+              <p>${escapeHtml(user.rank_title)} rank</p>
+            </div>
+            <div class="leaderboard-points">
+              <strong>${user.points}</strong>
+              <span>points</span>
+            </div>
+          </article>
+        `).join('');
+      } catch (error) {
+        statusEl.textContent = 'Unable to load leaderboard.';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadLeaderboard);
+  </script>
+</body>
+</html>
