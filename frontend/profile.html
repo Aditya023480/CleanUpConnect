@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>My Profile</h1>
+    <div class="header-actions">
+      <button type="button" id="theme-toggle" class="btn btn-ghost">Switch to Dark</button>
+      <a href="index.html" class="btn">Home</a>
+    </div>
+  </header>
+
+  <nav id="navbar" class="site-nav" aria-label="Main navigation"></nav>
+
+  <main>
+    <section class="event-card profile-card" id="profile-card">
+      <h2>Your Account</h2>
+      <p id="profile-status">Loading profile...</p>
+      <div id="profile-content" class="profile-content" hidden>
+        <p><strong>Username:</strong> <span id="profile-username"></span></p>
+        <p><strong>Email:</strong> <span id="profile-email"></span></p>
+        <p><strong>Role:</strong> <span id="profile-role"></span></p>
+        <p><strong>Points:</strong> <span id="profile-points"></span></p>
+        <p><strong>Rank:</strong> <span id="profile-rank"></span></p>
+        <p><strong>Member Since:</strong> <span id="profile-created"></span></p>
+      </div>
+    </section>
+  </main>
+
+  <script src="auth.js"></script>
+  <script src="navbar.js"></script>
+  <script src="theme.js"></script>
+  <script>
+    const profileStatus = document.getElementById('profile-status');
+    const profileContent = document.getElementById('profile-content');
+
+    async function loadProfile() {
+      if (!window.Auth.isLoggedIn()) {
+        window.location.href = 'login.html';
+        return;
+      }
+
+      try {
+        const user = await window.Auth.fetchProfile();
+
+        document.getElementById('profile-username').textContent = user.username;
+        document.getElementById('profile-email').textContent = user.email;
+        document.getElementById('profile-role').textContent = user.role || 'user';
+        document.getElementById('profile-points').textContent = user.points ?? 0;
+        document.getElementById('profile-rank').textContent = user.rank || 'Bronze';
+        document.getElementById('profile-created').textContent = new Date(user.created_at).toLocaleString();
+
+        profileStatus.textContent = 'Profile loaded successfully.';
+        profileContent.hidden = false;
+      } catch (error) {
+        profileStatus.textContent = 'Session expired. Please login again.';
+        setTimeout(() => {
+          window.location.href = 'login.html';
+        }, 900);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadProfile);
+  </script>
+</body>
+</html>

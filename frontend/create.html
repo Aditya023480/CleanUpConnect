@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Event</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Create New Event</h1>
+    <div class="header-actions">
+      <button type="button" id="theme-toggle" class="btn btn-ghost">Switch to Dark</button>
+      <a href="index.html" class="btn">Home</a>
+    </div>
+  </header>
+  <nav id="navbar" class="site-nav" aria-label="Main navigation"></nav>
+  <form id="create-form">
+    <label for="title">Title:</label>
+    <input type="text" id="title" required>
+    <label for="description">Description:</label>
+    <textarea id="description" required></textarea>
+    <label for="state">State:</label>
+    <input type="text" id="state" placeholder="e.g., California" required>
+    <label for="city">City:</label>
+    <input type="text" id="city" placeholder="e.g., San Francisco" required>
+    <label for="date">Date:</label>
+    <input type="datetime-local" id="date" required>
+    <label for="volunteers_needed">Volunteers Needed:</label>
+    <input type="number" id="volunteers_needed" required>
+    <button type="submit" class="btn">Create Event</button>
+  </form>
+  <script src="auth.js"></script>
+  <script src="navbar.js"></script>
+  <script src="theme.js"></script>
+  <script>
+    const createForm = document.getElementById('create-form');
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.Auth || !window.Auth.isLoggedIn()) {
+        alert('Please login first to create an event.');
+        window.location.href = 'login.html';
+      }
+    });
+
+    createForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const token = window.Auth.getToken();
+      if (!token) {
+        alert('Please login first to create an event.');
+        window.location.href = 'login.html';
+        return;
+      }
+
+      const data = {
+        title: document.getElementById('title').value,
+        description: document.getElementById('description').value,
+        state: document.getElementById('state').value,
+        city: document.getElementById('city').value,
+        date: document.getElementById('date').value,
+        volunteers_needed: parseInt(document.getElementById('volunteers_needed').value)
+      };
+      try {
+        const response = await fetch('http://localhost:5000/events', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(data)
+        });
+
+        if (response.status === 401) {
+          window.Auth.clearToken();
+          alert('Session expired. Please login again.');
+          window.location.href = 'login.html';
+          return;
+        }
+
+        if (!response.ok) {
+          const payload = await response.json().catch(() => ({}));
+          alert(payload.error || 'Failed to create event.');
+          return;
+        }
+
+        window.location.href = 'index.html';
+      } catch (error) {
+        console.error('Error creating event:', error);
+      }
+    });
+  </script>
+</body>
+</html>
