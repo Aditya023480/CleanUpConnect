@@ -1,4 +1,4 @@
-# Community Cleaning Platform MVP
+# CleanUpConnect MVP
 
 Community cleanup web app with event discovery, event creation, volunteer join flow, and beginner-friendly JWT authentication.
 
@@ -48,12 +48,18 @@ Community cleanup web app with event discovery, event creation, volunteer join f
   UPDATE users SET role = 'admin' WHERE username = 'your_username';
   ```
 
-6. Update database connection in `backend/db.js`:
-- `user`
-- `password`
-- `database`
-- `host`
-- `port`
+6. Update database connection in `backend/db.js` only if you are not using `DATABASE_URL`.
+
+### Local Environment Variables
+1. Copy `backend/.env.example` to `backend/.env`.
+2. Set:
+
+  ```env
+  PORT=5000
+  JWT_SECRET=replace_with_a_long_random_secret
+  DATABASE_URL=postgresql://postgres:postgres@localhost:5432/community_cleaning
+  FRONTEND_URL=http://localhost:8000
+  ```
 
 ### Environment Variables
 1. In `backend`, create a `.env` file (or copy `backend/.env.example`).
@@ -84,7 +90,8 @@ Community cleanup web app with event discovery, event creation, volunteer join f
    ```
 
 4. API base URL:
-- `http://localhost:5000`
+- `http://localhost:5000` locally
+- `https://cleanupconnect-api.onrender.com` on Render
 
 ### Frontend Setup
 1. Open `frontend/index.html` with a local web server.
@@ -96,6 +103,21 @@ Community cleanup web app with event discovery, event creation, volunteer join f
    ```
 
 3. Open `http://localhost:8000`.
+
+### Deployment
+#### Render backend
+1. Connect the repo to Render.
+2. Use `render.yaml` as the blueprint.
+3. Render will create:
+  - a web service named `cleanupconnect-api`
+  - a PostgreSQL database named `cleanupconnect-db`
+4. The backend reads `DATABASE_URL` automatically.
+
+#### Vercel frontend
+1. Deploy the `frontend` folder as the project root for the cleanest setup.
+2. If you deploy the whole repo to Vercel, the root `index.html` redirects into the frontend app.
+3. The frontend uses `frontend/api.js` to rewrite localhost API calls to the Render backend in production.
+4. If you use a different backend URL, update `frontend/api.js` or set `localStorage.cleanupconnect_api_base_url`.
 
 ## PostgreSQL Schema (Auth)
 

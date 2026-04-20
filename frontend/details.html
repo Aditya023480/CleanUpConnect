@@ -3,21 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Event Details</title>
+  <title>Event Details | CleanUpConnect</title>
+  <link rel="icon" type="image/png" href="assets/icon.png">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header>
-    <h1>Event Details</h1>
-    <div class="header-actions">
-      <button type="button" id="theme-toggle" class="btn btn-ghost">Switch to Dark</button>
-      <a href="index.html" class="btn">Home</a>
-    </div>
-  </header>
   <nav id="navbar" class="site-nav" aria-label="Main navigation"></nav>
   <main id="details-container">
     <!-- Event details will be loaded here -->
   </main>
+  <script src="api.js"></script>
   <script src="auth.js"></script>
   <script src="navbar.js"></script>
   <script src="theme.js"></script>
@@ -65,7 +60,7 @@
               ${volunteers.map(v => `<li>${v.username} (joined ${new Date(v.joined_at).toLocaleString()})</li>`).join('')}
             </ul>
             <div class="card-actions">
-              <button type="button" id="join-btn" class="btn" ${isCompleted ? 'disabled' : ''}>${isCompleted ? 'Event Completed' : 'Join Event'}</button>
+              <button type="button" id="join-btn" class="btn ${isCompleted ? 'btn-completed' : ''}" ${isCompleted ? 'disabled' : ''}>${isCompleted ? 'Event Completed' : 'Join Event'}</button>
               ${canComplete ? '<button type="button" id="complete-btn" class="btn btn-ghost">Mark Complete</button>' : ''}
             </div>
           </div>
