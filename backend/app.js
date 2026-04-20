@@ -17,28 +17,32 @@ const allowedOrigins = [
   'http://127.0.0.1:8000',
 ].filter(Boolean);
 
-app.use(
-  cors({
-    origin(origin, callback) {
-      if (!origin) {
-        return callback(null, true);
-      }
+const corsOptions = {
+  origin(origin, callback) {
+    if (!origin) {
+      return callback(null, true);
+    }
 
-      if (
-        allowedOrigins.includes(origin) ||
-        origin.endsWith('.vercel.app') ||
-        origin.startsWith('http://localhost') ||
-        origin.startsWith('https://localhost') ||
-        origin.startsWith('http://127.0.0.1') ||
-        origin.startsWith('https://127.0.0.1')
-      ) {
-        return callback(null, true);
-      }
+    if (
+      allowedOrigins.includes(origin) ||
+      origin.endsWith('.vercel.app') ||
+      origin.startsWith('http://localhost') ||
+      origin.startsWith('https://localhost') ||
+      origin.startsWith('http://127.0.0.1') ||
+      origin.startsWith('https://127.0.0.1')
+    ) {
+      return callback(null, true);
+    }
 
-      return callback(new Error('Not allowed by CORS'));
-    },
-  })
-);
+    return callback(new Error('Not allowed by CORS'));
+  },
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 app.use(express.json());
 
 app.use('/events', eventsRoutes);
