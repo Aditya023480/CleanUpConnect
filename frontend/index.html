@@ -9,24 +9,74 @@
 </head>
 <body>
   <nav id="navbar" class="site-nav" aria-label="Main navigation"></nav>
-  <section class="filters" aria-label="Event filters">
-    <div class="filter-group" id="state-filter-group">
-      <label for="state-select">Filter by State</label>
-      <select id="state-select"></select>
-    </div>
-    <div class="filter-group" id="city-filter-group">
-      <label for="city-select">Filter by City</label>
-      <select id="city-select" disabled></select>
-    </div>
-  </section>
-  <main id="events-container">
-    <!-- Events will be loaded here -->
+
+  <main class="landing-main">
+    <section class="landing-hero" aria-label="Introduction">
+      <div class="landing-hero-copy">
+        <p class="landing-kicker">Community-led impact</p>
+        <h2>Join local cleanup events and track your impact.</h2>
+        <p>
+          Discover verified cleanup drives near you, volunteer with neighbors,
+          and earn points for every event you complete.
+        </p>
+        <div class="landing-actions">
+          <a href="index.html" class="btn">See Upcoming Events</a>
+          <a href="create.html" class="btn btn-ghost">Create an Event</a>
+        </div>
+        <div class="landing-pill-row" aria-label="Platform highlights">
+          <span class="landing-pill">Volunteer</span>
+          <span class="landing-pill">Organize</span>
+          <span class="landing-pill">Compete</span>
+        </div>
+      </div>
+      <figure class="landing-hero-media">
+        <img src="assets/cleaning1.jpg" alt="Volunteer collecting trash in a forest cleanup effort">
+      </figure>
+    </section>
+
+    <section class="landing-section landing-features" aria-label="How it works">
+      <article class="landing-step">
+        <h3>Pick A City</h3>
+        <p>Filter by state and city to find active cleanup opportunities. Search across states like Maharashtra, Karnataka, Tamil Nadu, Delhi, and cities like Mumbai, Bangalore, Chennai, and more.</p>
+      </article>
+      <article class="landing-step">
+        <h3>Join And Contribute</h3>
+        <p>Volunteer for events and support local organizers on-ground.</p>
+      </article>
+      <article class="landing-step">
+        <h3>Get Recognized</h3>
+        <p>Earn points and move up the community leaderboard.</p>
+      </article>
+    </section>
+
+    <section class="landing-section landing-gallery" aria-label="Community nature highlights">
+      <article class="landing-photo-card">
+        <img src="assets/cleaning2.jpg" alt="Volunteers cleaning litter beside a lakeside">
+      </article>
+      <article class="landing-photo-card">
+        <img src="assets/cleaning3.jpg" alt="Volunteer carrying a bag of collected trash at sunset">
+      </article>
+      <article class="landing-photo-card">
+        <img src="assets/cleaning4.jpg" alt="Volunteers working together to collect litter near the water">
+      </article>
+      <article class="landing-photo-card">
+        <img src="assets/pexels-subhrajyoti-paul-447200412-35729428.jpg" alt="Cleanup volunteers working in a wooded area">
+      </article>
+    </section>
+
+    <section class="landing-cta" aria-label="Call to action">
+      <h2>Ready to make your area cleaner?</h2>
+      <p>Start with one event today.</p>
+      <div class="landing-actions">
+        <a href="register.html" class="btn">Create Free Account</a>
+        <a href="login.html" class="btn btn-ghost">Login</a>
+      </div>
+    </section>
   </main>
-  <section id="pagination-controls" class="pagination-controls" aria-label="Event list pagination"></section>
+
   <script src="api.js"></script>
   <script src="auth.js"></script>
   <script src="navbar.js"></script>
   <script src="theme.js"></script>
-  <script src="script.js"></script>
 </body>
 </html>
