@@ -70,10 +70,10 @@
       }
 
       try {
-        const response = await fetch(`${window.CLEANUPCONNECT_API_BASE_URL}/register`, {
+        const response = await fetch('http://localhost:5000/register', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
-          body: new URLSearchParams({ username, email, password }).toString(),
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, email, password }),
         });
 
         const data = await response.json();
