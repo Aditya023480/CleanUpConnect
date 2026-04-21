@@ -24,6 +24,7 @@ function isAllowedOrigin(origin) {
   return (
     allowedOrigins.includes(origin) ||
     origin.endsWith('.vercel.app') ||
+    origin.endsWith('.onrender.com') ||
     origin.startsWith('http://localhost') ||
     origin.startsWith('https://localhost') ||
     origin.startsWith('http://127.0.0.1') ||
@@ -41,7 +42,7 @@ app.use((req, res, next) => {
     }
 
     res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+    res.setHeader('Access-Control-Allow-Headers', 'Origin,X-Requested-With,Content-Type,Accept,Authorization');
     res.setHeader('Access-Control-Allow-Credentials', 'true');
   }
 
