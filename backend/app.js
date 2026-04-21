@@ -8,6 +8,14 @@ require('dotenv').config();
 
 const app = express();
 
+function normalizeOrigin(origin) {
+  if (!origin) {
+    return '';
+  }
+
+  return origin.trim().replace(/\/$/, '').toLowerCase();
+}
+
 const allowedOrigins = [
   process.env.FRONTEND_URL,
   process.env.CORS_ORIGIN,
@@ -17,17 +25,18 @@ const allowedOrigins = [
   'http://localhost:8000',
   'http://127.0.0.1:3000',
   'http://127.0.0.1:8000',
-].filter(Boolean);
+]
+  .map(normalizeOrigin)
+  .filter(Boolean);
 
 function isAllowedOrigin(origin) {
   if (!origin) {
     return true;
   }
 
-  const normalizedOrigin = origin.toLowerCase();
+  const normalizedOrigin = normalizeOrigin(origin);
 
   return (
-    allowedOrigins.includes(origin) ||
     allowedOrigins.includes(normalizedOrigin) ||
     normalizedOrigin.endsWith('.vercel.app') ||
     normalizedOrigin.endsWith('.onrender.com') ||
