@@ -57,7 +57,7 @@
         volunteers_needed: parseInt(document.getElementById('volunteers_needed').value)
       };
       try {
-        const response = await fetch('http://localhost:5000/events', {
+        const response = await fetch(window.CleanupConnectAPI.url('/events'), {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

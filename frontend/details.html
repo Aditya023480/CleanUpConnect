@@ -35,9 +35,9 @@
 
     async function loadDetails() {
       try {
-        const eventResponse = await fetch(`http://localhost:5000/events/${id}`);
+        const eventResponse = await fetch(window.CleanupConnectAPI.url(`/events/${id}`));
         const event = await eventResponse.json();
-        const volunteersResponse = await fetch(`http://localhost:5000/events/${id}/volunteers`);
+        const volunteersResponse = await fetch(window.CleanupConnectAPI.url(`/events/${id}/volunteers`));
         const volunteers = await volunteersResponse.json();
         const container = document.getElementById('details-container');
         const cityDisplay = event.city.charAt(0).toUpperCase() + event.city.slice(1);
@@ -76,7 +76,7 @@
             }
 
             try {
-              const response = await fetch(`http://localhost:5000/events/${id}/join`, {
+              const response = await fetch(window.CleanupConnectAPI.url(`/events/${id}/join`), {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
@@ -115,7 +115,7 @@
             }
 
             try {
-              const response = await fetch(`http://localhost:5000/events/${id}/complete`, {
+              const response = await fetch(window.CleanupConnectAPI.url(`/events/${id}/complete`), {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',

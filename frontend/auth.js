@@ -24,7 +24,7 @@
       throw new Error('No token found');
     }
 
-    const response = await fetch('http://localhost:5000/me', {
+    const response = await fetch(window.CleanupConnectAPI.url('/me'), {
       headers: {
         Authorization: `Bearer ${token}`,
       },

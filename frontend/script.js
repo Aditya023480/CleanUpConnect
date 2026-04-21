@@ -46,7 +46,7 @@ function wireFilterControls() {
 
 async function loadStates() {
   try {
-    const response = await fetch('http://localhost:5000/events/states');
+    const response = await fetch(window.CleanupConnectAPI.url('/events/states'));
     const states = await response.json();
     const stateSelect = document.getElementById('state-select');
 
@@ -69,7 +69,7 @@ async function loadStates() {
 
 async function loadCities(selectedState) {
   try {
-    const response = await fetch(`http://localhost:5000/events/cities?state=${encodeURIComponent(selectedState)}`);
+    const response = await fetch(window.CleanupConnectAPI.url(`/events/cities?state=${encodeURIComponent(selectedState)}`));
     const cities = await response.json();
     const citySelect = document.getElementById('city-select');
 
@@ -105,7 +105,7 @@ async function loadEvents() {
     params.set('page', String(state.currentPage));
     params.set('limit', String(state.pageSize));
 
-    const response = await fetch(`http://localhost:5000/events?${params.toString()}`);
+    const response = await fetch(window.CleanupConnectAPI.url(`/events?${params.toString()}`));
     const payload = await response.json();
     const events = Array.isArray(payload) ? payload : (payload.data || []);
     const pagination = payload.pagination || {
@@ -225,7 +225,7 @@ async function joinEvent(id) {
   const token = window.Auth.getToken();
 
   try {
-    const response = await fetch(`http://localhost:5000/events/${id}/join`, {
+    const response = await fetch(window.CleanupConnectAPI.url(`/events/${id}/join`), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

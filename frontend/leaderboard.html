@@ -42,7 +42,7 @@
 
     async function loadLeaderboard() {
       try {
-        const response = await fetch('http://localhost:5000/leaderboard');
+        const response = await fetch(window.CleanupConnectAPI.url('/leaderboard'));
         const data = await response.json();
 
         if (!response.ok) {

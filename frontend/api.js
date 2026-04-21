@@ -1,6 +1,6 @@
 (function () {
   const DEFAULT_LOCAL_BASE_URL = 'http://localhost:5000';
-  const DEFAULT_PROD_BASE_URL = 'https://cleanupconnect-api.onrender.com';
+  const DEFAULT_PROD_BASE_URL = 'https://cleanupconnect.onrender.com';
 
   const storedBaseUrl = localStorage.getItem('cleanupconnect_api_base_url');
   const baseUrl = (storedBaseUrl || (
@@ -11,6 +11,13 @@
   )).replace(/\/$/, '');
 
   window.CLEANUPCONNECT_API_BASE_URL = baseUrl;
+
+  window.CleanupConnectAPI = {
+    baseUrl,
+    url(path) {
+      return `${baseUrl}${path.startsWith('/') ? path : `/${path}`}`;
+    },
+  };
 
   const originalFetch = window.fetch.bind(window);
 
