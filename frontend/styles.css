@@ -520,6 +520,46 @@ main {
   }
 }
 
+@media (max-width: 980px) {
+  .site-nav {
+    width: min(100% - 1rem, 1280px);
+    padding: 0.75rem 0.85rem;
+  }
+
+  .landing-main {
+    width: min(100% - 1rem, 1280px);
+    margin: 1rem auto 2.5rem;
+  }
+
+  .landing-hero {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .landing-hero-copy {
+    max-width: 100%;
+  }
+
+  .landing-hero h2 {
+    max-width: 100%;
+  }
+
+  .landing-hero-media img {
+    height: clamp(240px, 54vw, 420px);
+  }
+
+  .landing-features,
+  .landing-gallery {
+    grid-template-columns: 1fr;
+  }
+
+  .pagination-controls,
+  .filters,
+  main {
+    width: min(100% - 1rem, 1120px);
+  }
+}
+
 .pagination-controls {
   width: min(1120px, calc(100% - 2rem));
   margin: -1.75rem auto 2.5rem;
@@ -854,15 +894,27 @@ body[data-theme="dark"] .form-message.error {
   .filters {
     flex-direction: column;
     align-items: stretch;
+    margin-top: 0.8rem;
+    padding: 0.9rem;
+    border-radius: 14px;
   }
 
   .site-nav {
     grid-template-columns: 1fr;
     gap: 0.65rem;
+    border-radius: 10px;
   }
 
   .nav-links {
-    justify-content: center;
+    justify-content: flex-start;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 0.2rem;
+    scrollbar-width: thin;
+  }
+
+  .nav-link {
+    white-space: nowrap;
   }
 
   .nav-brand {
@@ -880,10 +932,55 @@ body[data-theme="dark"] .form-message.error {
 
   main {
     width: min(100% - 1rem, 1120px);
+    margin: 1rem auto 2rem;
   }
 
   .event-card {
     padding: 1rem;
+  }
+
+  .event-card h2 {
+    font-size: 1.2rem;
+  }
+
+  .card-actions {
+    gap: 0.55rem;
+  }
+
+  .card-actions .btn,
+  .card-actions a.btn {
+    width: 100%;
+  }
+
+  .landing-main {
+    gap: 0.85rem;
+    margin: 0.9rem auto 2rem;
+  }
+
+  .landing-hero,
+  .landing-section,
+  .landing-cta {
+    padding: 1rem;
+    border-radius: 12px;
+  }
+
+  .landing-hero h2 {
+    font-size: clamp(1.6rem, 7.2vw, 2rem);
+    line-height: 1.12;
+  }
+
+  .landing-hero-copy > p,
+  .landing-cta > p {
+    font-size: 0.96rem;
+    line-height: 1.6;
+  }
+
+  .landing-kicker {
+    font-size: 0.72rem;
+  }
+
+  .landing-photo-card img {
+    height: 210px;
   }
 
   .landing-stats,
@@ -903,5 +1000,30 @@ body[data-theme="dark"] .form-message.error {
 
   .pagination-btn {
     width: 100%;
+  }
+}
+
+@media (max-width: 420px) {
+  .site-nav {
+    padding: 0.65rem 0.7rem;
+  }
+
+  .nav-brand-logo {
+    width: 30px;
+    height: 30px;
+  }
+
+  .nav-brand-text {
+    font-size: 0.95rem;
+  }
+
+  .btn {
+    padding: 0.68rem 0.9rem;
+  }
+
+  .filter-group select,
+  form input,
+  form textarea {
+    padding: 0.8rem 0.85rem;
   }
 }
