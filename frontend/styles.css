@@ -484,6 +484,11 @@ main {
   text-align: center;
 }
 
+.landing-cta > p {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .landing-cta .landing-actions {
   justify-content: center;
 }
