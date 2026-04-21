@@ -5,11 +5,11 @@
       return;
     }
 
-    const currentPage = window.location.pathname.split('/').pop() || 'landing.html';
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
     let loggedIn = window.Auth && window.Auth.isLoggedIn();
     const links = [
-      { href: 'landing.html', label: 'Home' },
-      { href: 'index.html', label: 'Events' },
+      { href: 'index.html', label: 'Home' },
+      { href: 'events.html', label: 'Events' },
       { href: 'create.html', label: 'Create Event' },
       { href: 'leaderboard.html', label: 'Leaderboard' },
     ];
@@ -30,7 +30,7 @@
     }
 
     nav.innerHTML = `
-      <a href="landing.html" class="nav-brand" aria-label="CleanUpConnect Home">
+      <a href="index.html" class="nav-brand" aria-label="CleanUpConnect Home">
         <img src="assets/icon.png" alt="CleanUpConnect icon" class="nav-brand-logo">
         <span class="nav-brand-text">CleanUpConnect</span>
       </a>
