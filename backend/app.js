@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const eventsRoutes = require('./routes/events');
 const authRoutes = require('./routes/auth');
 const leaderboardRoutes = require('./routes/leaderboard');
@@ -10,6 +11,8 @@ const app = express();
 const allowedOrigins = [
   process.env.FRONTEND_URL,
   process.env.CORS_ORIGIN,
+  'https://clean-up-connect.vercel.app',
+  'https://cleanupconnect.vercel.app',
   'http://localhost:3000',
   'http://localhost:8000',
   'http://127.0.0.1:3000',
@@ -21,37 +24,37 @@ function isAllowedOrigin(origin) {
     return true;
   }
 
+  const normalizedOrigin = origin.toLowerCase();
+
   return (
     allowedOrigins.includes(origin) ||
-    origin.endsWith('.vercel.app') ||
-    origin.endsWith('.onrender.com') ||
-    origin.startsWith('http://localhost') ||
-    origin.startsWith('https://localhost') ||
-    origin.startsWith('http://127.0.0.1') ||
-    origin.startsWith('https://127.0.0.1')
+    allowedOrigins.includes(normalizedOrigin) ||
+    normalizedOrigin.endsWith('.vercel.app') ||
+    normalizedOrigin.endsWith('.onrender.com') ||
+    normalizedOrigin.startsWith('http://localhost') ||
+    normalizedOrigin.startsWith('https://localhost') ||
+    normalizedOrigin.startsWith('http://127.0.0.1') ||
+    normalizedOrigin.startsWith('https://127.0.0.1')
   );
 }
 
-app.use((req, res, next) => {
-  const origin = req.headers.origin;
-
-  if (isAllowedOrigin(origin)) {
-    if (origin) {
-      res.setHeader('Access-Control-Allow-Origin', origin);
-      res.setHeader('Vary', 'Origin');
+const corsOptions = {
+  origin(origin, callback) {
+    if (isAllowedOrigin(origin)) {
+      callback(null, origin || true);
+      return;
     }
 
-    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Origin,X-Requested-With,Content-Type,Accept,Authorization');
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-  }
+    callback(new Error(`Blocked by CORS: ${origin}`));
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
+  optionsSuccessStatus: 204,
+};
 
-  if (req.method === 'OPTIONS') {
-    return res.sendStatus(204);
-  }
-
-  return next();
-});
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 app.use(express.json());
 
